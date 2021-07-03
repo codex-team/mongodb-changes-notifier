@@ -1,4 +1,4 @@
-mongodb_uri: mongodb://127.0.0.1:27017/retrospect?readPreference=primary&replicaSet=rs0
+mongodbUri: "mongodb://127.0.0.1:27017/retrospect?readPreference=primary&replicaSet=rs0"
 
 watches:
   - name: Watch persons changes
