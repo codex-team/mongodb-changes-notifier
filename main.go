@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"sync"
+	"text/template"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -118,7 +119,20 @@ func iterateChangeStream(routineCtx context.Context, waitGroup *sync.WaitGroup, 
 			panic(err)
 		}
 
-		notify(watch.Template, watch.NotifyHook)
+		t, err := template.New("todos").Parse(watch.Template)
+
+		if err != nil {
+			panic(err)
+		}
+
+		var tpl bytes.Buffer
+
+		err = t.Execute(&tpl, data)
+		if err != nil {
+			panic(err)
+		}
+
+		notify(tpl.String(), watch.NotifyHook)
 		printJson(data)
 	}
 }
