@@ -15,7 +15,11 @@ import (
 func setupCollectionWatch(watch Watch, database *mongo.Database, waitGroup *sync.WaitGroup) {
 	collection := database.Collection(watch.Collection)
 
-	stream, err := collection.Watch(context.Background(), mongo.Pipeline{}, options.ChangeStream().SetFullDocument(options.UpdateLookup))
+	stream, err := collection.Watch(
+		context.Background(),
+		mongo.Pipeline{},
+		options.ChangeStream().SetFullDocument(options.UpdateLookup),
+	)
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +34,7 @@ func iterateChangeStream(waitGroup *sync.WaitGroup, stream *mongo.ChangeStream, 
 	defer func(stream *mongo.ChangeStream) {
 		err := stream.Close(context.Background())
 		if err != nil {
-			log.Fatal("Error during change stream closing", err)
+			log.Println("Error during change stream closing", err)
 		}
 	}(stream)
 	defer waitGroup.Done()
@@ -56,7 +60,7 @@ func iterateChangeStream(waitGroup *sync.WaitGroup, stream *mongo.ChangeStream, 
 
 		err = notify(tpl.String(), watch.NotifyHook)
 		if err != nil {
-			log.Fatal("Error during change stream closing", err)
+			log.Println("Error during change stream closing", err)
 		}
 	}
 }

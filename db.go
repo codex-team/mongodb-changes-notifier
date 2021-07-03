@@ -14,18 +14,18 @@ func GetDatabase(uri string) (*mongo.Database, *mongo.Client) {
 	cs, err := connstring.ParseAndValidate(uri)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return nil, nil
 	}
 

@@ -11,7 +11,7 @@ func printJSON(data interface{}) {
 	text, err := json.MarshalIndent(data, "", "\t")
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	fmt.Println(string(text))

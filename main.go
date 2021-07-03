@@ -11,14 +11,14 @@ func main() {
 	cfg, err := NewConfig("./config.yml")
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	database, client := GetDatabase(cfg.MongodbUri)
 	defer func(client *mongo.Client, ctx context.Context) {
 		err := client.Disconnect(ctx)
 		if err != nil {
-			log.Fatal("Error during disconnecting from database", err)
+			log.Println("Error during disconnecting from database", err)
 		}
 	}(client, context.Background())
 
