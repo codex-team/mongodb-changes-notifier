@@ -12,6 +12,11 @@ import (
 // GetDatabase - connects to MongoDB instance and returns database with name from URI and Client
 func GetDatabase(uri string) (*mongo.Database, *mongo.Client) {
 	cs, err := connstring.ParseAndValidate(uri)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
 		log.Fatal(err)

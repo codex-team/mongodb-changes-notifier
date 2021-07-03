@@ -6,8 +6,8 @@ import (
 	"log"
 )
 
-// Pretty-prints data as JSON document
-func printJson(data interface{}) {
+//nolint:deadcode,unused // Pretty-prints data as JSON document
+func printJSON(data interface{}) {
 	text, err := json.MarshalIndent(data, "", "\t")
 
 	if err != nil {
