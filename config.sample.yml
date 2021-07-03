@@ -1,6 +1,15 @@
 mongodbUri: "mongodb://127.0.0.1:27017/retrospect?readPreference=primary&replicaSet=rs0"
+notifyHook: ""
 
 watches:
   - name: Watch persons changes
     on: update
     collection: persons
+    template: |
+      Person has been updated! 🆙
+
+      Updated fields
+
+      Deleted fields
+
+
