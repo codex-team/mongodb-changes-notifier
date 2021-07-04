@@ -13,6 +13,7 @@ import (
 func notify(text string, hook string) error {
 	data := url.Values{}
 	data.Set("message", text)
+	data.Set("parse_mode", "HTML")
 
 	_, err := MakeHTTPRequest("POST", hook, []byte(data.Encode()), map[string]string{
 		"Content-Type": "application/x-www-form-urlencoded",
