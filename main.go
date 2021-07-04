@@ -25,7 +25,7 @@ func main() {
 	var waitGroup sync.WaitGroup
 
 	for _, value := range cfg.Watches {
-		setupCollectionWatch(value, database, &waitGroup)
+		setupWatch(value, database, &waitGroup)
 	}
 	log.Println("All watcher are set up")
 

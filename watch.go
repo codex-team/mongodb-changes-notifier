@@ -10,21 +10,35 @@ import (
 )
 
 // Set up change stream watching based on Watch config
-func setupCollectionWatch(watch Watch, database *mongo.Database, waitGroup *sync.WaitGroup) {
-	collection := database.Collection(watch.Collection)
+func setupWatch(watch Watch, database *mongo.Database, waitGroup *sync.WaitGroup) {
+	for _, collectionName := range watch.Collections {
+		collection := database.Collection(collectionName)
 
-	stream, err := collection.Watch(
-		context.Background(),
-		mongo.Pipeline{},
-		options.ChangeStream().SetFullDocument(options.UpdateLookup),
-	)
-	if err != nil {
-		panic(err)
+		matchPipeline := bson.D{
+			{
+				"$match",
+				bson.D{
+					{
+						"operationType",
+						bson.D{{"$in", watch.EventTypes}},
+					},
+				},
+			},
+		}
+
+		stream, err := collection.Watch(
+			context.Background(),
+			mongo.Pipeline{matchPipeline},
+			options.ChangeStream().SetFullDocument(options.UpdateLookup),
+		)
+		if err != nil {
+			panic(err)
+		}
+
+		waitGroup.Add(1)
+
+		go iterateChangeStream(waitGroup, stream, watch)
 	}
-
-	waitGroup.Add(1)
-
-	go iterateChangeStream(waitGroup, stream, watch)
 }
 
 // Listens to incoming change events and performs actions with them

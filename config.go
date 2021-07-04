@@ -7,11 +7,11 @@ import (
 
 // Watch describes structure for collection watch task
 type Watch struct {
-	Name       string `yaml:"name"`
-	On         string `yaml:"on"`
-	Collection string `yaml:"collection"`
-	NotifyHook string `yaml:"notify_hook"`
-	Template   string `yaml:"template"`
+	Name        string   `yaml:"name"`
+	EventTypes  []string `yaml:"event_types"`
+	Collections []string `yaml:"collections"`
+	NotifyHook  string   `yaml:"notify_hook"`
+	Template    string   `yaml:"template"`
 }
 
 // Config describes application configuration structure
