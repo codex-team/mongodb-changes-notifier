@@ -8,7 +8,12 @@ import (
 )
 
 func main() {
-	cfg, err := NewConfig("./config.yml")
+	cfgPath, err := ParseFlags()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cfg, err := NewConfig(cfgPath)
 
 	if err != nil {
 		log.Println(err)
