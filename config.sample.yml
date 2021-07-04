@@ -1,15 +1,29 @@
-mongodbUri: "mongodb://127.0.0.1:27017/retrospect?readPreference=primary&replicaSet=rs0"
-notifyHook: ""
+# MongoDB URI for connecting
+# See https://docs.mongodb.com/manual/reference/connection-string/
+mongodbUri: "mongodb://127.0.0.1:27017/codex?readPreference=primary&replicaSet=rs0"
 
+# List of watches config
+# Describe here what collections you want to watch and what send when event fires
 watches:
-  - name: Watch persons changes
-    on: update
-    collection: persons
+    # List of event types you want to watch.
+    # See https://docs.mongodb.com/manual/reference/change-events/
+  - event_types:
+      - update
+      - delete
+    # List of collection names you want to watch
+    collections:
+      - persons
+      - users
+    # Notify hook from CodeX bot for sending notifications
+    # See https://github.com/codex-bot/notify
+    notify_hook: ""
+
+    # Notification template
     template: |
-      Person has been updated! 🆙
+      <b>Person</b> has been updated! 🆙
+      See on <a href="https://admin.st-retrospect.dh-center.ru/persons/{{ printf "%s%s" "Person:" .documentKey._id.Hex | b64enc }}">this page</a>
 
-      Updated fields
-
-      Deleted fields
-
-
+      <b>Updated fields:</b>
+      {{ .updateDescription.updatedFields | toYaml | indent 2 }}
+      <b>Deleted fields:</b>
+      {{ .updateDescription.removedFields | toYaml | indent 2 }}
