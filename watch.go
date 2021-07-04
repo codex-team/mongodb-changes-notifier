@@ -43,7 +43,6 @@ func iterateChangeStream(waitGroup *sync.WaitGroup, stream *mongo.ChangeStream, 
 			panic(err)
 		}
 
-		printJSON(data)
 		text, err := renderTemplate(data, watch)
 
 		if err != nil {
