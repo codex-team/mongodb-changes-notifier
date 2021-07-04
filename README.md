@@ -26,3 +26,37 @@ You can select what collections you want to watch, what change event types you i
 - [ ] Watching for collections by regexp
 - [ ] Watching the entire deployment ([link](https://docs.mongodb.com/manual/changeStreams/#watch-collection-database-deployment))
 - [ ] Docker configuration
+
+
+## Example
+
+### Logging users registrations
+
+```yaml
+# MongoDB URI for connecting
+# See https://docs.mongodb.com/manual/reference/connection-string/
+mongodb_uri: "mongodb://127.0.0.1:27017/retrospect?readPreference=primary&replicaSet=rs0"
+
+# List of watches config
+# Describe here what collections you want to watch and what send when event fires
+watches:
+    # List of event types you want to watch.
+    # See https://docs.mongodb.com/manual/reference/change-events/
+  - event_types:
+      - insert
+    # List of collection names you want to watch
+    collections:
+      - users
+    # Notify hook from CodeX bot for sending notifications
+    # See https://github.com/codex-bot/notify
+    notify_hook: "https://notify.bot.codex.so/u/O7BK8PA6"
+
+    # Notification template. Renders via text/template module
+    template: |
+      New user registered! 🚀
+      ID:  {{ .fullDocument._id.Hex }}
+      Username: {{ .fullDocument.username }}
+```
+
+You will receive the following notification when new user register:
+![example1](imgs/example1.png)

@@ -1,6 +1,6 @@
 # MongoDB URI for connecting
 # See https://docs.mongodb.com/manual/reference/connection-string/
-mongodbUri: "mongodb://127.0.0.1:27017/codex?readPreference=primary&replicaSet=rs0"
+mongodb_uri: "mongodb://127.0.0.1:27017/codex?readPreference=primary&replicaSet=rs0"
 
 # List of watches config
 # Describe here what collections you want to watch and what send when event fires
