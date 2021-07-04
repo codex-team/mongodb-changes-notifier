@@ -1,14 +1,12 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"sync"
-	"text/template"
 )
 
 // Set up change stream watching based on Watch config
@@ -31,12 +29,12 @@ func setupCollectionWatch(watch Watch, database *mongo.Database, waitGroup *sync
 
 // Listens to incoming change events and performs actions with them
 func iterateChangeStream(waitGroup *sync.WaitGroup, stream *mongo.ChangeStream, watch Watch) {
-	defer func(stream *mongo.ChangeStream) {
+	defer func() {
 		err := stream.Close(context.Background())
 		if err != nil {
 			log.Println("Error during change stream closing", err)
 		}
-	}(stream)
+	}()
 	defer waitGroup.Done()
 
 	for stream.Next(context.Background()) {
@@ -45,22 +43,16 @@ func iterateChangeStream(waitGroup *sync.WaitGroup, stream *mongo.ChangeStream, 
 			panic(err)
 		}
 
-		t, err := template.New("todos").Parse(watch.Template)
+		printJSON(data)
+		text, err := renderTemplate(data, watch)
 
 		if err != nil {
-			panic(err)
+			log.Println("Error during template rendering", err)
 		}
 
-		var tpl bytes.Buffer
-
-		err = t.Execute(&tpl, data)
+		err = notify(text, watch.NotifyHook)
 		if err != nil {
-			panic(err)
-		}
-
-		err = notify(tpl.String(), watch.NotifyHook)
-		if err != nil {
-			log.Println("Error during change stream closing", err)
+			log.Println("Error during sending notification", err)
 		}
 	}
 }
