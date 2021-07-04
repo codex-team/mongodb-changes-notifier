@@ -15,12 +15,14 @@ func setupWatch(watch Watch, database *mongo.Database, waitGroup *sync.WaitGroup
 		collection := database.Collection(collectionName)
 
 		matchPipeline := bson.D{
-			{
-				"$match",
-				bson.D{
-					{
-						"operationType",
-						bson.D{{"$in", watch.EventTypes}},
+			bson.E{
+				Key: "$match",
+				Value: bson.D{
+					bson.E{
+						Key: "operationType",
+						Value: bson.D{
+							bson.E{Key: "$in", Value: watch.EventTypes},
+						},
 					},
 				},
 			},
