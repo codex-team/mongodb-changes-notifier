@@ -12,13 +12,12 @@ watches:
       - delete
     # List of collection names you want to watch
     collections:
-      - persons
       - users
     # Notify hook from CodeX bot for sending notifications
     # See https://github.com/codex-bot/notify
     notify_hook: ""
 
-    # Notification template
+    # Notification template. Renders via text/template module
     template: |
       <b>Person</b> has been updated! 🆙
       See on <a href="https://admin.st-retrospect.dh-center.ru/persons/{{ printf "%s%s" "Person:" .documentKey._id.Hex | b64enc }}">this page</a>
