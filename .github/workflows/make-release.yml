@@ -1,8 +1,6 @@
 name: make-release
 on: [push, pull_request]
 
-env:
-  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 jobs:
   lint:
     name: Lint
@@ -23,7 +21,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/mongodb-changes-notifier
+          images: ${{ secrets.DOCKER_USERNAME }}/mongodb-changes-notifier
           tags: |
             type=ref,event=branch
             type=ref,event=pr
