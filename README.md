@@ -28,6 +28,20 @@ You can select what collections you want to watch, what change event types you i
 - [ ] Docker configuration
 - [ ] Custom variables providing
 
+## Docker usage
+This tool also available as Docker image on DockerHub.
+
+You can use it in the way like it:
+
+```yaml
+version: "3.8"
+
+services:
+  app:
+    image: "codexteamuser/mongodb-changes-notifier"
+    volumes:
+      - ./config.yml:/config.yml:ro
+```
 
 ## Example
 
