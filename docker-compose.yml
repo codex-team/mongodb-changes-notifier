@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    depends_on:
+      - mongodb
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./config.yml:/config.yml:ro
+
+  mongodb:
+    image: mongo:5.0.2
+    hostname: mongodb
+    volumes:
+      - mongodata:/data/db
+      - mongo-config:/data/configdb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: codex
+      MONGO_REPLICA_SET_NAME: rs0
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+
+volumes:
+  mongodata:
+  mongo-config:
