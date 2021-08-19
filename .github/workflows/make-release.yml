@@ -26,9 +26,8 @@ jobs:
 #          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - run: |
-          echo "::debug:: $DOCKERHUB_USERNAME"
-          echo "::debug:: $GITHUB_REF"
-
+          echo "::debug::$DOCKERHUB_USERNAME"
+          echo "::debug::$GITHUB_REF"
           if [[ /refs/tags/ = $GITHUB_REF* ]]; then
             tags="
               $DOCKERHUB_USERNAME/mongodb-changes-notifier:latest
