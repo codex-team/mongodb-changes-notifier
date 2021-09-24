@@ -25,7 +25,6 @@ You can select what collections you want to watch, what change event types you i
 - [ ] Another notifications channels (Email, Slack, etc)
 - [ ] Watching for collections by regexp
 - [ ] Watching the entire deployment ([link](https://docs.mongodb.com/manual/changeStreams/#watch-collection-database-deployment))
-- [ ] Docker configuration
 - [ ] Custom variables providing
 
 ## Docker usage
