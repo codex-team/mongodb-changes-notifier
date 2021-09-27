@@ -19,7 +19,7 @@ You can select what collections you want to watch, what change event types you i
 ## Usage
 
 1. Create `config.yml` file using example file [./config.sample.yml](./config.sample.yml)
-2. Run `./mongodb-logger` command. By default, it will use `config.yml` file from current directory, but you can provide your owm path via `-config` flag
+2. Run `./mongodb-changes-notifier` command. By default, it will use `config.yml` file from current directory, but you can provide your owm path via `-config` flag
 
 ## TODO
 - [ ] Another notifications channels (Email, Slack, etc)
